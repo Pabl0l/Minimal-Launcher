@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/app_label"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp"
+    android:textColor="@color/offwhite"
+    android:textSize="18sp"
+    android:letterSpacing="0.01"
+    android:maxLines="1"
+    android:ellipsize="end"
+    android:background="?attr/selectableItemBackground" />

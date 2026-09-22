@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Base oscura casi opaca: legible sobre cualquier fondo -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="270"
+                android:startColor="#F5232327"
+                android:endColor="#F00D0D10" />
+            <corners
+                android:topLeftRadius="30dp"
+                android:topRightRadius="30dp" />
+        </shape>
+    </item>
+    <!-- Brillo superior tipo cristal -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#00000000" />
+            <corners
+                android:topLeftRadius="30dp"
+                android:topRightRadius="30dp" />
+            <stroke android:width="0.8dp" android:color="@color/glass_stroke" />
+        </shape>
+    </item>
+</layer-list>

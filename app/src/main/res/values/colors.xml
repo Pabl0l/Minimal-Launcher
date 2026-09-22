@@ -1,0 +1,22 @@
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="offwhite">#FFF5F5F7</color>
+    <color name="gray">#FF8E8E93</color>
+    <color name="dim">#FF48484A</color>
+    <color name="separator">#FF2C2C2E</color>
+    <color name="card">#FF1C1C1E</color>
+
+    <!-- Glass / liquid: translucidos sobre el fondo animado -->
+    <color name="glass_fill_top">#33FFFFFF</color>
+    <color name="glass_fill_bottom">#14FFFFFF</color>
+    <color name="glass_stroke">#40FFFFFF</color>
+    <color name="glass_stroke_soft">#1FFFFFFF</color>
+    <color name="glass_inner">#0DFFFFFF</color>
+    <color name="glass_sel_fill">#3DFFFFFF</color>
+    <color name="glass_track">#1FFFFFFF</color>
+    <color name="scrim_top">#66000000</color>
+    <color name="scrim_bottom">#B3000000</color>
+    <color name="accent">#FFFFFFFF</color>
+    <color name="accent_dim">#66FFFFFF</color>
+</resources>

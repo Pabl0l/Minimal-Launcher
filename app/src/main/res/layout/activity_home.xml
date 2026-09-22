@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.minimal.launcher.GestureFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/home_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black">
+
+    <!-- Fondo animado (detras de todo) -->
+    <com.minimal.launcher.AnimatedBackgroundView
+        android:id="@+id/bg_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- Tuerca de ajustes arriba a la derecha -->
+    <ImageView
+        android:id="@+id/gear"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="52dp"
+        android:layout_marginEnd="28dp"
+        android:src="@drawable/ic_cat_settings"
+        android:tint="@color/gray"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Ajustes" />
+
+    <LinearLayout
+        android:id="@+id/home_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingStart="36dp"
+        android:paddingEnd="36dp"
+        android:paddingTop="72dp"
+        android:paddingBottom="40dp">
+
+        <TextView
+            android:id="@+id/clock_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="68sp"
+            android:includeFontPadding="false"
+            android:letterSpacing="-0.03" />
+
+        <com.minimal.launcher.AnalogClockView
+            android:id="@+id/clock_analog"
+            android:layout_width="168dp"
+            android:layout_height="168dp"
+            android:visibility="gone" />
+
+        <TextClock
+            android:id="@+id/clock_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:format12Hour="EEEE d MMMM"
+            android:format24Hour="EEEE d MMMM"
+            android:textColor="@color/gray"
+            android:textSize="15sp" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:id="@+id/shortcuts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.15" />
+    </LinearLayout>
+</com.minimal.launcher.GestureFrameLayout>

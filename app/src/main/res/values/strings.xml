@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Minimal</string>
+    <string name="search_hint">Buscar…</string>
+    <string name="apps_label">aplicaciones</string>
+    <string name="empty_slot">＋</string>
+    <string name="cfg_choose_app">Elegir app</string>
+    <string name="cfg_choose_icon">Elegir icono</string>
+    <string name="cfg_clear">Quitar</string>
+    <string name="cfg_title">Configurar acceso</string>
+    <string name="pick_icon_title">Elegir icono</string>
+    <string name="cancel">Cancelar</string>
+    <string name="wallpaper_label">Minimal · Fondo animado</string>
+    <string name="wallpaper_desc">Fondos animados monocromo en la pantalla de bloqueo. Se pausan al apagar la pantalla.</string>
+</resources>
