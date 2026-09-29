@@ -22,8 +22,7 @@ import androidx.core.content.ContextCompat
  */
 object SettingsUi {
 
-    fun dp(ctx: Context, v: Float): Int =
-        (v * ctx.resources.displayMetrics.density).toInt()
+    fun dp(ctx: Context, v: Float): Int = Dimens.dp(ctx, v)
 
     private fun mw() = ViewGroup.LayoutParams.MATCH_PARENT
     private fun wc() = ViewGroup.LayoutParams.WRAP_CONTENT

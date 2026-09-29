@@ -40,7 +40,7 @@ class AnalogClockView @JvmOverloads constructor(
         super.onDetachedFromWindow()
     }
 
-    private fun dp(v: Float) = v * resources.displayMetrics.density
+    private fun dp(v: Float) = Dimens.dpF(context, v)
 
     override fun onDraw(canvas: Canvas) {
         val cx = width / 2f

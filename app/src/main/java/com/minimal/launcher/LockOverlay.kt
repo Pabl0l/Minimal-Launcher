@@ -118,7 +118,7 @@ class LockOverlay(private val ctx: Context) {
         return batteryPct
     }
 
-    private fun dp(v: Float): Float = v * ctx.resources.displayMetrics.density
+    private fun dp(v: Float): Float = Dimens.dpF(ctx, v)
 
     private fun sp(v: Float): Float = TypedValue.applyDimension(
         TypedValue.COMPLEX_UNIT_SP, v, ctx.resources.displayMetrics

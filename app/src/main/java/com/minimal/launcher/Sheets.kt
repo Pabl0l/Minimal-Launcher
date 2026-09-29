@@ -24,7 +24,7 @@ import java.util.Locale
  */
 object Sheets {
 
-    private fun dp(ctx: Context, v: Float) = SettingsUi.dp(ctx, v)
+    private fun dp(ctx: Context, v: Float) = Dimens.dp(ctx, v)
 
     /** Crea la hoja anclada abajo y devuelve (dialog, cuerpo donde agregar filas). */
     private fun sheet(ctx: Context, titleText: String): Pair<Dialog, LinearLayout> {

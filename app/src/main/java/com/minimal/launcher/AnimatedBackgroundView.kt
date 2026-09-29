@@ -1123,5 +1123,5 @@ class AnimatedBackgroundView @JvmOverloads constructor(
 
     private fun white(a: Int) = Color.argb(a.coerceIn(0, 255), 255, 255, 255)
 
-    private fun dp(v: Float) = v * resources.displayMetrics.density
+    private fun dp(v: Float) = Dimens.dpF(context, v)
 }

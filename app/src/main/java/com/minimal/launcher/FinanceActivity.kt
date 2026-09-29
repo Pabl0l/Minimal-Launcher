@@ -12,6 +12,7 @@ import android.widget.ScrollView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import kotlin.math.abs
 
 /** Panel de saldo: total (suma de billeteras) + ingresos/egresos + edicion de billeteras. */
@@ -50,7 +51,7 @@ class FinanceActivity : AppCompatActivity() {
         val scroll = findViewById<ScrollView>(R.id.finance_scroll)
         val entry = intent.getStringExtra(EXTRA_ENTRY_DIR) ?: "up"
         val exitDir = opposite(entry)
-        val trigger = 110f * resources.displayMetrics.density
+        val trigger = Dimens.dpF(this, 110f)
 
         val detector = GestureDetector(this, object : GestureDetector.SimpleOnGestureListener() {
             override fun onFling(e1: MotionEvent?, e2: MotionEvent, vx: Float, vy: Float): Boolean {
@@ -213,8 +214,8 @@ class FinanceActivity : AppCompatActivity() {
             inputType = InputType.TYPE_CLASS_NUMBER
             hint = "0"
             setText(if (prefillDigits == "0") "" else prefillDigits)
-            setTextColor(0xFFF5F5F7.toInt())
-            setHintTextColor(0xFF48484A.toInt())
+            setTextColor(ContextCompat.getColor(context, R.color.offwhite))
+            setHintTextColor(ContextCompat.getColor(context, R.color.dim))
             textSize = 22f
             setSelection(text.length)
         }
@@ -230,8 +231,8 @@ class FinanceActivity : AppCompatActivity() {
         val input = EditText(this).apply {
             inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_CAP_WORDS
             setText(prefill)
-            setTextColor(0xFFF5F5F7.toInt())
-            setHintTextColor(0xFF48484A.toInt())
+            setTextColor(ContextCompat.getColor(context, R.color.offwhite))
+            setHintTextColor(ContextCompat.getColor(context, R.color.dim))
             textSize = 18f
             setSelection(text.length)
         }
@@ -244,7 +245,7 @@ class FinanceActivity : AppCompatActivity() {
     }
 
     private fun wrap(view: EditText): FrameLayout {
-        val pad = (resources.displayMetrics.density * 22).toInt()
+        val pad = Dimens.dp(this, 22f)
         return FrameLayout(this).apply {
             setPadding(pad, pad / 2, pad, 0)
             addView(view)
@@ -253,9 +254,9 @@ class FinanceActivity : AppCompatActivity() {
 
     private fun divider(): android.view.View {
         val v = android.view.View(this)
-        val h = (resources.displayMetrics.density * 0.5f).toInt().coerceAtLeast(1)
+        val h = Dimens.dp(this, 0.5f).coerceAtLeast(1)
         v.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, h)
-        v.setBackgroundColor(0xFF2C2C2E.toInt())
+        v.setBackgroundColor(ContextCompat.getColor(this, R.color.separator))
         return v
     }
 }

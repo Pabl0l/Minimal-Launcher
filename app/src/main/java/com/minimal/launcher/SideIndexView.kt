@@ -51,5 +51,5 @@ class SideIndexView @JvmOverloads constructor(
         return super.onTouchEvent(event)
     }
 
-    private fun dp(v: Float) = v * resources.displayMetrics.density
+    private fun dp(v: Float) = Dimens.dpF(context, v)
 }

@@ -19,4 +19,13 @@
     <color name="scrim_bottom">#B3000000</color>
     <color name="accent">#FFFFFFFF</color>
     <color name="accent_dim">#66FFFFFF</color>
+
+    <!-- Acciones: ingreso (verde) / egreso (rojo) — sutiles sobre fondo oscuro -->
+    <color name="positive">#FF34C759</color>
+    <color name="positive_dim">#3334C759</color>
+    <color name="negative">#FFFF3B30</color>
+    <color name="negative_dim">#33FF3B30</color>
+
+    <!-- Superficies -->
+    <color name="surface">#FF0A0A0A</color>
 </resources>

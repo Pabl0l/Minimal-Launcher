@@ -419,5 +419,5 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun dp(v: Int) = (v * resources.displayMetrics.density).toInt()
+    private fun dp(v: Int) = Dimens.dp(this, v.toFloat())
 }
