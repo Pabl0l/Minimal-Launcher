@@ -217,25 +217,36 @@ class HomeActivity : AppCompatActivity() {
 
     private fun wireSlot(v: View, index: Int) {
         v.setOnClickListener { onSlotClick(index) }
-        v.setOnLongClickListener { startSlotDrag(v); true }
+        v.setOnLongClickListener { showSlotOptions(index); true }
         v.setOnDragListener { target, event -> onSlotDrag(target, event) }
         Motion.press(v)
     }
 
-    /** Long-press: levanta el acceso para arrastrarlo. */
-    private fun startSlotDrag(v: View) {
-        dragFrom = slotViews.indexOf(v)
-        if (dragFrom < 0) return
-        dropHandled = false
-        v.performHapticFeedback(android.view.HapticFeedbackConstants.LONG_PRESS)
-        val shadow = View.DragShadowBuilder(v)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            v.startDragAndDrop(null, shadow, null, 0)
+    /** Long-press: muestra opciones del acceso directo. */
+    private fun showSlotOptions(index: Int) {
+        val slot = Prefs.getSlot(this, index)
+        val options = if (slot.isEmpty) {
+            arrayOf(getString(R.string.cfg_choose_app))
         } else {
-            @Suppress("DEPRECATION")
-            v.startDrag(null, shadow, null, 0)
+            arrayOf(
+                getString(R.string.cfg_choose_app),
+                getString(R.string.cfg_choose_icon),
+                getString(R.string.cfg_clear)
+            )
         }
-        v.alpha = 0.3f
+        AlertDialog.Builder(this, R.style.Theme_MinimalDialog)
+            .setTitle(R.string.cfg_title)
+            .setItems(options) { _, which ->
+                when (options[which]) {
+                    getString(R.string.cfg_choose_app) -> pickAppForSlot(index)
+                    getString(R.string.cfg_choose_icon) -> showIconPicker(index)
+                    getString(R.string.cfg_clear) -> {
+                        Prefs.clearSlot(this, index)
+                        renderSlots()
+                    }
+                }
+            }
+            .show()
     }
 
     private fun onSlotDrag(target: View, event: android.view.DragEvent): Boolean {
@@ -263,7 +274,7 @@ class HomeActivity : AppCompatActivity() {
                 slotViews.forEach { it.alpha = 1f; it.scaleX = 1f; it.scaleY = 1f }
                 // soltado en el mismo sitio (sin mover) -> abrir configuracion
                 if (!dropHandled && dragFrom >= 0 && slotViews.indexOf(target) == dragFrom) {
-                    showSlotConfig(dragFrom)
+                    showSlotOptions(dragFrom)
                 }
                 dragFrom = -1
                 return true
@@ -311,32 +322,6 @@ class HomeActivity : AppCompatActivity() {
     }
 
     // --- Config de slot ---
-
-    private fun showSlotConfig(index: Int) {
-        val slot = Prefs.getSlot(this, index)
-        val options = if (slot.isEmpty) {
-            arrayOf(getString(R.string.cfg_choose_app))
-        } else {
-            arrayOf(
-                getString(R.string.cfg_choose_app),
-                getString(R.string.cfg_choose_icon),
-                getString(R.string.cfg_clear)
-            )
-        }
-        AlertDialog.Builder(this, R.style.Theme_MinimalDialog)
-            .setTitle(R.string.cfg_title)
-            .setItems(options) { _, which ->
-                when (options[which]) {
-                    getString(R.string.cfg_choose_app) -> pickAppForSlot(index)
-                    getString(R.string.cfg_choose_icon) -> showIconPicker(index)
-                    getString(R.string.cfg_clear) -> {
-                        Prefs.clearSlot(this, index)
-                        renderSlots()
-                    }
-                }
-            }
-            .show()
-    }
 
     private fun pickAppForSlot(index: Int) {
         pendingGestureKey = null

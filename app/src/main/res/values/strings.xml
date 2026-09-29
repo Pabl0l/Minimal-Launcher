@@ -3,12 +3,17 @@
     <string name="search_hint">Buscar…</string>
     <string name="apps_label">aplicaciones</string>
     <string name="empty_slot">＋</string>
-    <string name="cfg_choose_app">Elegir app</string>
-    <string name="cfg_choose_icon">Elegir icono</string>
-    <string name="cfg_clear">Quitar</string>
-    <string name="cfg_title">Configurar acceso</string>
+    <string name="cfg_choose_app">Cambiar app</string>
+    <string name="cfg_choose_icon">Editar icono</string>
+    <string name="cfg_clear">Quitar acceso</string>
+    <string name="cfg_title">Acceso directo</string>
+    <string name="cfg_reorder">Reordenar</string>
     <string name="pick_icon_title">Elegir icono</string>
     <string name="cancel">Cancelar</string>
+    <string name="app_open">Abrir</string>
+    <string name="app_uninstall">Desinstalar</string>
+    <string name="app_info">Información de la app</string>
+    <string name="app_title">Aplicación</string>
     <string name="wallpaper_label">Minimal · Fondo animado</string>
     <string name="wallpaper_desc">Fondos animados monocromo en la pantalla de bloqueo. Se pausan al apagar la pantalla.</string>
 </resources>

@@ -7,6 +7,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -57,7 +58,8 @@ class AppDrawerActivity : AppCompatActivity() {
         // Adapter de apps (lista normal)
         appAdapter = AppListAdapter(
             items = emptyList(),
-            onClick = { onAppSelected(it) }
+            onClick = { onAppSelected(it) },
+            onLongClick = { showAppOptions(it) }
         )
 
         // Adapter de búsqueda universal
@@ -141,5 +143,46 @@ class AppDrawerActivity : AppCompatActivity() {
                 Toast.makeText(this, "No se pudo abrir la app", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    /** Long-press en una app del drawer: opciones de acción. */
+    private fun showAppOptions(app: AppInfo) {
+        val options = arrayOf(
+            getString(R.string.app_open),
+            getString(R.string.app_uninstall),
+            getString(R.string.app_info)
+        )
+        AlertDialog.Builder(this, R.style.Theme_MinimalDialog)
+            .setTitle(app.label)
+            .setItems(options) { _, which ->
+                when (options[which]) {
+                    getString(R.string.app_open) -> {
+                        try {
+                            startActivity(AppsRepository.launchIntent(app.pkg, app.cls))
+                        } catch (_: Exception) {
+                            Toast.makeText(this, "No se pudo abrir", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    getString(R.string.app_uninstall) -> {
+                        val uri = android.net.Uri.parse("package:${app.pkg}")
+                        val intent = Intent(Intent.ACTION_DELETE, uri)
+                        try {
+                            startActivity(intent)
+                        } catch (_: Exception) {
+                            Toast.makeText(this, "No se pudo desinstalar", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    getString(R.string.app_info) -> {
+                        val uri = android.net.Uri.parse("package:${app.pkg}")
+                        val intent = Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS, uri)
+                        try {
+                            startActivity(intent)
+                        } catch (_: Exception) {
+                            Toast.makeText(this, "No se pudo abrir", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
+            .show()
     }
 }
