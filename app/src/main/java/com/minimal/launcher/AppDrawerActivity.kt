@@ -7,8 +7,12 @@ import android.text.TextWatcher
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /** Cajon de apps: lista A-Z, buscador e indice lateral. Tambien sirve de selector. */
 class AppDrawerActivity : AppCompatActivity() {
@@ -69,15 +73,15 @@ class AppDrawerActivity : AppCompatActivity() {
         loadAppsAsync()
     }
 
-    /** Carga las apps en un hilo aparte para no bloquear la UI. */
+    /** Carga las apps en un hilo IO usando Coroutines (reemplaza Thread legacy). */
     private fun loadAppsAsync() {
-        Thread {
-            val apps = AppsRepository.getApps(this)
-            runOnUiThread {
-                allApps = apps
-                adapter.submit(apps)
+        lifecycleScope.launch {
+            val apps = withContext(Dispatchers.IO) {
+                AppsRepository.getApps(this@AppDrawerActivity)
             }
-        }.start()
+            allApps = apps
+            adapter.submit(apps)
+        }
     }
 
     private fun filter(query: String) {
