@@ -38,8 +38,18 @@ class FinanceActivity : AppCompatActivity() {
         Motion.press(findViewById(R.id.btn_income))
         Motion.press(findViewById(R.id.btn_expense))
 
+        setupParallax()
         setupExitGesture()
         render()
+    }
+
+    /** Parallax sutil: el total se desplaza al 30% del scroll. */
+    private fun setupParallax() {
+        val scroll = findViewById<ScrollView>(R.id.finance_scroll)
+        scroll.setOnScrollChangeListener { _, _, sy, _, _ ->
+            totalView.translationY = sy * 0.3f
+            totalView.alpha = (1f - sy / 600f).coerceIn(0.4f, 1f)
+        }
     }
 
     /**

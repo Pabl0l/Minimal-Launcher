@@ -372,8 +372,16 @@ class HomeActivity : AppCompatActivity() {
     // --- Ajustes / finanzas ---
 
     private fun openSettings() {
-        startActivity(Intent(this, SettingsActivity::class.java))
-        overridePendingTransition(R.anim.modal_in, R.anim.hold)
+        // Animación de rotación del gear antes de abrir ajustes
+        gear.animate()
+            .rotation(90f)
+            .setDuration(200)
+            .withEndAction {
+                gear.rotation = 0f
+                startActivity(Intent(this, SettingsActivity::class.java))
+                overridePendingTransition(R.anim.modal_in, R.anim.hold)
+            }
+            .start()
     }
 
     /** Abre finanzas guardando la direccion de entrada (para salir con la contraria). */
