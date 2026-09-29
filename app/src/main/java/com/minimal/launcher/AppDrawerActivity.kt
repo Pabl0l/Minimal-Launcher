@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -14,7 +15,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-/** Cajon de apps: lista A-Z, buscador e indice lateral. Tambien sirve de selector. */
+/** Cajon de apps: lista A-Z, buscador e indice lateral. Tambien sirve de selector.
+ *  Incluye búsqueda universal: apps + ajustes + web. */
 class AppDrawerActivity : AppCompatActivity() {
 
     companion object {
@@ -24,7 +26,8 @@ class AppDrawerActivity : AppCompatActivity() {
         const val EXTRA_LABEL = "label"
     }
 
-    private lateinit var adapter: AppListAdapter
+    private lateinit var appAdapter: AppListAdapter
+    private lateinit var searchAdapter: SearchResultsAdapter
     private lateinit var layoutManager: LinearLayoutManager
     private var allApps: List<AppInfo> = emptyList()
     private var isPickMode = false
@@ -51,45 +54,77 @@ class AppDrawerActivity : AppCompatActivity() {
         recycler.layoutManager = layoutManager
         recycler.setHasFixedSize(true)
 
-        adapter = AppListAdapter(
+        // Adapter de apps (lista normal)
+        appAdapter = AppListAdapter(
             items = emptyList(),
             onClick = { onAppSelected(it) }
         )
-        recycler.adapter = adapter
+
+        // Adapter de búsqueda universal
+        searchAdapter = SearchResultsAdapter(
+            items = emptyList(),
+            onClick = { result -> UniversalSearch.launch(this, result) }
+        )
+
+        recycler.adapter = appAdapter
 
         search.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, a: Int, b: Int, c: Int) {}
             override fun onTextChanged(s: CharSequence?, a: Int, b: Int, c: Int) {
-                filter(s?.toString().orEmpty())
+                onSearchChanged(s?.toString().orEmpty())
             }
             override fun afterTextChanged(s: Editable?) {}
         })
 
         sideIndex.onLetter = { letter ->
-            val pos = adapter.indexForLetter(letter)
+            val pos = appAdapter.indexForLetter(letter)
             if (pos >= 0) layoutManager.scrollToPositionWithOffset(pos, 0)
         }
 
         loadAppsAsync()
     }
 
-    /** Carga las apps en un hilo IO usando Coroutines (reemplaza Thread legacy). */
+    /** Carga las apps en un hilo IO usando Coroutines. */
     private fun loadAppsAsync() {
         lifecycleScope.launch {
             val apps = withContext(Dispatchers.IO) {
                 AppsRepository.getApps(this@AppDrawerActivity)
             }
             allApps = apps
-            adapter.submit(apps)
+            appAdapter.submit(apps)
         }
     }
 
-    private fun filter(query: String) {
+    /** Cambio en el buscador: si hay query, muestra búsqueda universal; si no, la lista de apps. */
+    private fun onSearchChanged(query: String) {
+        val q = query.trim()
+        if (q.isEmpty() || isPickMode) {
+            // Lista normal de apps
+            recycler()?.adapter = appAdapter
+            sideIndex()?.visibility = View.VISIBLE
+            filterApps(q)
+        } else {
+            // Búsqueda universal (apps + ajustes + web)
+            lifecycleScope.launch {
+                val results = withContext(Dispatchers.IO) {
+                    UniversalSearch.search(this@AppDrawerActivity, q)
+                }
+                searchAdapter.submit(results)
+                recycler()?.adapter = searchAdapter
+                sideIndex()?.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun filterApps(query: String) {
         val q = query.trim().lowercase()
         val result = if (q.isEmpty()) allApps
         else allApps.filter { it.label.lowercase().contains(q) }
-        adapter.submit(result)
+        appAdapter.submit(result)
     }
+
+    private fun recycler(): RecyclerView? = findViewById(R.id.app_list)
+    private fun sideIndex(): SideIndexView? = findViewById(R.id.side_index)
 
     private fun onAppSelected(app: AppInfo) {
         if (isPickMode) {
