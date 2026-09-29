@@ -1,6 +1,7 @@
 package com.minimal.launcher
 
 import android.content.Context
+import android.content.Intent
 import android.content.IntentFilter
 import android.net.wifi.WifiManager
 import android.os.BatteryManager
@@ -42,17 +43,22 @@ object SystemInfo {
 
     @Suppress("DEPRECATION")
     fun wifi(context: Context): WifiInfo {
-        val wm = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as? WifiManager
-        val info = wm?.connectionInfo
-        val ssid = info?.ssid?.removeSurrounding("\"") ?: "—"
-        val rssi = info?.rssi ?: 0
-        val strength = when {
-            rssi > -50 -> 4
-            rssi > -65 -> 3
-            rssi > -75 -> 2
-            rssi > -85 -> 1
-            else -> 0
+        return try {
+            val wm = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as? WifiManager
+            val info = wm?.connectionInfo
+            val ssid = info?.ssid?.removeSurrounding("\"") ?: "—"
+            val rssi = info?.rssi ?: 0
+            val strength = when {
+                rssi > -50 -> 4
+                rssi > -65 -> 3
+                rssi > -75 -> 2
+                rssi > -85 -> 1
+                else -> 0
+            }
+            WifiInfo(ssid, strength)
+        } catch (_: SecurityException) {
+            // Sin permiso ACCESS_WIFI_STATE: devuelve valor por defecto
+            WifiInfo("—", 0)
         }
-        return WifiInfo(ssid, strength)
     }
 }
