@@ -62,14 +62,6 @@
             android:textSize="15sp"
             android:letterSpacing="0.02" />
 
-        <!-- Widget de información del sistema -->
-        <com.minimal.launcher.SystemInfoView
-            android:id="@+id/system_info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="8dp" />
-
         <Space
             android:layout_width="match_parent"
             android:layout_height="0dp"
