@@ -34,6 +34,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var clockDate: TextView
     private lateinit var gear: ImageView
     private lateinit var bgView: AnimatedBackgroundView
+    private lateinit var systemInfoView: SystemInfoView
 
     private val clockHandler = Handler(Looper.getMainLooper())
     private val clockTick = object : Runnable {
@@ -84,6 +85,7 @@ class HomeActivity : AppCompatActivity() {
         clockDate = findViewById(R.id.clock_date)
         gear = findViewById(R.id.gear)
         bgView = findViewById(R.id.bg_view)
+        systemInfoView = findViewById(R.id.system_info)
 
         gear.setOnClickListener { openSettings() }
         Motion.press(gear)
@@ -97,6 +99,7 @@ class HomeActivity : AppCompatActivity() {
         applyAppearance()
         cleanOrphanSlots()
         renderSlots()
+        systemInfoView.refresh()
         bgView.start()
         clockHandler.post(clockTick)
         animateEntrance()
